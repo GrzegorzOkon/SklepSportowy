@@ -48,7 +48,7 @@ public class ProgramZaliczeniowy {
                             } else if (akcjaUzytkownika.equals("dodaj")) {
                                 program.dodajProdukt(obiektybazodanowe.get(produktUzytkownika));
                             } else if (akcjaUzytkownika.equals("usun")) {
-                                System.out.println("Usuwam...");
+                                program.usunProdukt(obiektybazodanowe.get(produktUzytkownika));
                             } else if (akcjaUzytkownika.equals("wczytaj")) {
                                 program.wylistujProdukty(obiektybazodanowe.get(produktUzytkownika));
                             } else if (akcjaUzytkownika.equals("policz")) {
@@ -114,6 +114,26 @@ public class ProgramZaliczeniowy {
             }
         } catch (InputMismatchException e) {
             System.out.println("Nieprawidłowe dane!!!");
+        }
+    }
+
+    private void usunProdukt(IObiektBazodanowy obiektBazodanowy) {
+        try {
+            System.out.println("Który produkt chcesz usunąć?");
+            wylistujProdukty(obiektBazodanowy);
+            int idDoUsuniecia = skaner.nextInt();
+            skaner.nextLine();
+
+            if (obiektBazodanowy instanceof TabelaNarty) {
+                ((TabelaNarty)obiektBazodanowy).ustawBiezacyProdukt(idDoUsuniecia);
+                int usunietaIlosc = ((TabelaNarty)obiektBazodanowy).usunZBazy();
+
+                System.out.println("Usunięta ilość produktów: " + usunietaIlosc);
+            } else if (obiektBazodanowy instanceof TabelaRowery) {
+
+            }
+        } catch (InputMismatchException e) {
+            System.out.println("Wprowadzone ID nie jest liczbą całkowitą!!");
         }
     }
 

@@ -57,6 +57,18 @@ public class TabelaNarty implements IObiektBazodanowy {
 
     @Override
     public int usunZBazy() {
+        try {
+            String sql = "DELETE FROM narty WHERE id = ?";
+            PreparedStatement wsad = polaczenie.prepareStatement(sql);
+            wsad.setInt(1, biezacyProdukt.getId());
+
+            if (wsad.executeUpdate() == 1) {
+                return 1;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         return 0;
     }
 
