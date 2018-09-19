@@ -89,7 +89,12 @@ public class ProgramZaliczeniowy {
                     System.out.println(produkt);
                 }
             } else if (obiektBazodanowy instanceof TabelaRowery) {
-
+                ((TabelaRowery)obiektBazodanowy).ustawBiezacyProdukt(id);
+                ((TabelaRowery)obiektBazodanowy).wyswietl();
+                Rower produkt = ((TabelaRowery)obiektBazodanowy).pobierzProdukt();
+                if (produkt != null) {
+                    System.out.println(produkt);
+                }
             }
         } catch (InputMismatchException e) {
             System.out.println("Nieprawdlowy parametr. Sprobuj jeszcze raz.");
@@ -107,10 +112,11 @@ public class ProgramZaliczeniowy {
             if (obiektBazodanowy instanceof TabelaNarty) {
                 ((TabelaNarty)obiektBazodanowy).ustawBiezacyProdukt(nazwa, cena);
                 int dodanaIlosc = ((TabelaNarty)obiektBazodanowy).dodajDoBazy();
-
                 System.out.println("Dodana ilość produktów: " + dodanaIlosc);
             } else if (obiektBazodanowy instanceof TabelaRowery) {
-
+                ((TabelaRowery)obiektBazodanowy).ustawBiezacyProdukt(nazwa, cena);
+                int dodanaIlosc = ((TabelaRowery)obiektBazodanowy).dodajDoBazy();
+                System.out.println("Dodana ilość produktów: " + dodanaIlosc);
             }
         } catch (InputMismatchException e) {
             System.out.println("Nieprawidłowe dane!!!");
@@ -127,10 +133,11 @@ public class ProgramZaliczeniowy {
             if (obiektBazodanowy instanceof TabelaNarty) {
                 ((TabelaNarty)obiektBazodanowy).ustawBiezacyProdukt(idDoUsuniecia);
                 int usunietaIlosc = ((TabelaNarty)obiektBazodanowy).usunZBazy();
-
                 System.out.println("Usunięta ilość produktów: " + usunietaIlosc);
             } else if (obiektBazodanowy instanceof TabelaRowery) {
-
+                ((TabelaRowery)obiektBazodanowy).ustawBiezacyProdukt(idDoUsuniecia);
+                int usunietaIlosc = ((TabelaRowery)obiektBazodanowy).usunZBazy();
+                System.out.println("Usunięta ilość produktów: " + usunietaIlosc);
             }
         } catch (InputMismatchException e) {
             System.out.println("Wprowadzone ID nie jest liczbą całkowitą!!");
