@@ -46,7 +46,7 @@ public class ProgramZaliczeniowy {
                             if (akcjaUzytkownika.equals("wyswietl")) {
                                 program.wyswietlProdukt(obiektybazodanowe.get(produktUzytkownika));
                             } else if (akcjaUzytkownika.equals("dodaj")) {
-                                System.out.println("Dodaje...");
+                                program.dodajProdukt(obiektybazodanowe.get(produktUzytkownika));
                             } else if (akcjaUzytkownika.equals("usun")) {
                                 System.out.println("Usuwam...");
                             } else if (akcjaUzytkownika.equals("wczytaj")) {
@@ -76,24 +76,44 @@ public class ProgramZaliczeniowy {
     }
 
     private void wyswietlProdukt(IObiektBazodanowy obiektBazodanowy) {
-        System.out.println("Ktory produkt chcesz wyswietlic? Podaj ID");
-        int id = 0;
         try {
-            id = skaner.nextInt();
+            System.out.println("Ktory produkt chcesz wyswietlic? Podaj ID");
+            int id = skaner.nextInt();
             skaner.nextLine();
+
+            if (obiektBazodanowy instanceof TabelaNarty) {
+                ((TabelaNarty)obiektBazodanowy).ustawBiezacyProdukt(id);
+                ((TabelaNarty)obiektBazodanowy).wyswietl();
+                Narty produkt = ((TabelaNarty)obiektBazodanowy).pobierzProdukt();
+                if (produkt != null) {
+                    System.out.println(produkt);
+                }
+            } else if (obiektBazodanowy instanceof TabelaRowery) {
+
+            }
         } catch (InputMismatchException e) {
             System.out.println("Nieprawdlowy parametr. Sprobuj jeszcze raz.");
         }
+    }
 
-        if (obiektBazodanowy instanceof TabelaNarty) {
-            ((TabelaNarty)obiektBazodanowy).ustawBiezaceId(id);
-            ((TabelaNarty)obiektBazodanowy).wyswietl();
-            Narty produkt = ((TabelaNarty)obiektBazodanowy).pobierzProdukt();
-            if (produkt != null) {
-                System.out.println(produkt.toString());
+    private void dodajProdukt(IObiektBazodanowy obiektBazodanowy) {
+        try {
+            System.out.println("Jak nazywa się nowy produkt:");
+            String nazwa = skaner.nextLine();
+            System.out.println("Jaką ma mieć cenę:");
+            float cena = skaner.nextFloat();
+            skaner.nextLine();
+
+            if (obiektBazodanowy instanceof TabelaNarty) {
+                ((TabelaNarty)obiektBazodanowy).ustawBiezacyProdukt(nazwa, cena);
+                int dodanaIlosc = ((TabelaNarty)obiektBazodanowy).dodajDoBazy();
+
+                System.out.println("Dodana ilość produktów: " + dodanaIlosc);
+            } else if (obiektBazodanowy instanceof TabelaRowery) {
+
             }
-        } else if (obiektBazodanowy instanceof TabelaRowery) {
-
+        } catch (InputMismatchException e) {
+            System.out.println("Nieprawidłowe dane!!!");
         }
     }
 
@@ -101,7 +121,7 @@ public class ProgramZaliczeniowy {
         ArrayList<Object> produkty = (ArrayList)obiektBazodanowy.wczytajZBazy();
 
         for(Object produkt : produkty) {
-            System.out.println(produkt.toString());
+            System.out.println(produkt);
         }
     }
 
