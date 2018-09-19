@@ -54,6 +54,21 @@ public class TabelaNarty implements IObiektBazodanowy {
 
     @Override
     public int policzWBazie() {
-        return 0;
+        try {
+            String sql = "SELECT count(*) FROM narty;";
+            PreparedStatement zapytanie = polaczenie.prepareStatement(sql);
+
+            ResultSet wynik = zapytanie.executeQuery();
+
+            while (wynik.next()) {
+                int ilosc = wynik.getInt(1);
+
+                return ilosc;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return -1;
     }
 }

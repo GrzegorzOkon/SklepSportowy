@@ -50,7 +50,7 @@ public class ProgramZaliczeniowy {
                             } else if (akcjaUzytkownika.equals("wczytaj")) {
                                 program.wylistujProdukty(obiektybazodanowe.get(produktUzytkownika));
                             } else if (akcjaUzytkownika.equals("policz")) {
-                                System.out.println("Licze...");
+                                program.zliczProdukty(obiektybazodanowe.get(produktUzytkownika));
                             } else if (akcjaUzytkownika.equals("wroc")) {
                                 break;
                             }
@@ -78,6 +78,14 @@ public class ProgramZaliczeniowy {
 
         for(Object produkt : produkty) {
             System.out.println(produkt.toString());
+        }
+    }
+
+    private void zliczProdukty(IObiektBazodanowy obiektBazodanowy) {
+        int ilosc = obiektBazodanowy.policzWBazie();
+
+        if (ilosc != -1) {
+            System.out.println("Ilość w bazie: " + ilosc);
         }
     }
 }
