@@ -8,6 +8,8 @@ import java.util.ArrayList;
 
 public class TabelaNarty implements IObiektBazodanowy {
     private Connection polaczenie;
+    private int biezaceId = 0;
+    private Narty biezacyProdukt = null;
 
     public TabelaNarty() throws SQLException {
         polaczenie = BazaDanychSingleton.polaczenie();
@@ -15,7 +17,25 @@ public class TabelaNarty implements IObiektBazodanowy {
 
     @Override
     public void wyswietl() {
+        try {
+            String sql = "SELECT id, nazwa, cena FROM narty WHERE id = ?";
+            PreparedStatement zapytanie = polaczenie.prepareStatement(sql);
+            zapytanie.setInt(1, biezaceId);
 
+            ResultSet wynik = zapytanie.executeQuery();
+
+            biezacyProdukt = null;
+
+            while (wynik.next()) {
+                int id = wynik.getInt("id");
+                String nazwa = wynik.getString("nazwa");
+                float cena = wynik.getFloat("cena");
+
+                biezacyProdukt = new Narty(id, nazwa, cena);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -70,5 +90,13 @@ public class TabelaNarty implements IObiektBazodanowy {
         }
 
         return -1;
+    }
+
+    public void ustawBiezaceId(int id) {
+        biezaceId = id;
+    }
+
+    public Narty pobierzProdukt() {
+        return biezacyProdukt;
     }
 }

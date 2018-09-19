@@ -1,25 +1,22 @@
 package pl.uep.kurs.nsi;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Scanner;
+import java.util.*;
 
 public class ProgramZaliczeniowy {
+    Scanner skaner = new Scanner(System.in);
+
     public static void main(String[] args) {
         try {
             ProgramZaliczeniowy program = new ProgramZaliczeniowy();
 
-            String[] dostepneProdukty = new String[]{"narty", "rowery"};
+            String[] dostepneProdukty = new String[]{"narty", "rowery", "koniec"};
             String[] dostepneAkcje = new String[]{"wyswietl", "dodaj", "usun", "wczytaj", "policz", "wroc"};
 
             HashMap<String, IObiektBazodanowy> obiektybazodanowe = new HashMap<String, IObiektBazodanowy>() {{
                 put("narty", new TabelaNarty());
                 put("rowery", new TabelaRowery());
             }};
-
-            Scanner skaner = new Scanner(System.in);
 
             System.out.println("Witamy w wirtualnym sklepie sportowym. Dostepne produkty:");
             for (String dzial : dostepneProdukty) {
@@ -33,16 +30,21 @@ public class ProgramZaliczeniowy {
 
             while (true) {
                 System.out.println("\nCo Ciebie interesuje?");
-                String produktUzytkownika = skaner.nextLine();
+                String produktUzytkownika = program.skaner.nextLine();
+
+                if (produktUzytkownika.equals("koniec")) {
+                    System.out.println("Do widzenia :)");
+                    break;
+                }
 
                 while (true) {
                     if (Arrays.asList(dostepneProdukty).contains(produktUzytkownika)) {
                         System.out.println("Co chcesz zrobić?");
-                        String akcjaUzytkownika = skaner.nextLine();
+                        String akcjaUzytkownika = program.skaner.nextLine();
 
                         if (Arrays.asList(dostepneAkcje).contains(akcjaUzytkownika)) {
                             if (akcjaUzytkownika.equals("wyswietl")) {
-                                System.out.println("Wywietlam...");
+                                program.wyswietlProdukt(obiektybazodanowe.get(produktUzytkownika));
                             } else if (akcjaUzytkownika.equals("dodaj")) {
                                 System.out.println("Dodaje...");
                             } else if (akcjaUzytkownika.equals("usun")) {
@@ -73,6 +75,28 @@ public class ProgramZaliczeniowy {
         }
     }
 
+    private void wyswietlProdukt(IObiektBazodanowy obiektBazodanowy) {
+        System.out.println("Ktory produkt chcesz wyswietlic? Podaj ID");
+        int id = 0;
+        try {
+            id = skaner.nextInt();
+            skaner.nextLine();
+        } catch (InputMismatchException e) {
+            System.out.println("Nieprawdlowy parametr. Sprobuj jeszcze raz.");
+        }
+
+        if (obiektBazodanowy instanceof TabelaNarty) {
+            ((TabelaNarty)obiektBazodanowy).ustawBiezaceId(id);
+            ((TabelaNarty)obiektBazodanowy).wyswietl();
+            Narty produkt = ((TabelaNarty)obiektBazodanowy).pobierzProdukt();
+            if (produkt != null) {
+                System.out.println(produkt.toString());
+            }
+        } else if (obiektBazodanowy instanceof TabelaRowery) {
+
+        }
+    }
+
     private void wylistujProdukty(IObiektBazodanowy obiektBazodanowy) {
         ArrayList<Object> produkty = (ArrayList)obiektBazodanowy.wczytajZBazy();
 
@@ -89,11 +113,3 @@ public class ProgramZaliczeniowy {
         }
     }
 }
-
-        /*for(Object produkt : produkty) {
-            if (produkt instanceof Narty) {
-                System.out.println(produkt.toString());
-            } else if (produkt instanceof Rower) {
-
-            }
-        }*/

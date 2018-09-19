@@ -1,9 +1,11 @@
 package pl.uep.kurs.nsi;
 
 public class Narty {
-    int id;
-    String nazwa;
-    float cena;
+    private int id;
+    private String nazwa;
+    private float cena;
+
+
 
     public Narty(String nazwa, float cena) {
         this.nazwa = nazwa;
